@@ -1,8 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
+
+import Data.Accounts;
 
 public class Main implements ActionListener{
+
 
     JFrame mainFrame = new JFrame("AOOP Project");
     
@@ -28,6 +32,14 @@ public class Main implements ActionListener{
     JMenuItem aboutItem = new JMenuItem("About");
 
     public Main() {
+
+        Database db = new Database();
+        db.createConnection();    
+
+        Vector<Accounts> accounts = new Vector<>();
+        accounts = db.loadAccountsData();
+
+
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(300, 300);
@@ -66,7 +78,7 @@ public class Main implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == inventoryMenuBtn) 
-            new Inventory();
-        
+            new InventoryFrame();
+
     }
 }
