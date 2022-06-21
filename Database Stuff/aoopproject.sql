@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2022 at 11:11 AM
+-- Generation Time: Jun 21, 2022 at 11:47 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -77,6 +77,7 @@ CREATE TABLE `orderedproduct` (
 
 CREATE TABLE `orders` (
   `orderID` int(12) NOT NULL,
+  `inventoryID` int(12) NOT NULL,
   `name` varchar(255) NOT NULL,
   `orderedBy` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL
@@ -109,7 +110,8 @@ ALTER TABLE `orderedproduct`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`orderID`);
+  ADD PRIMARY KEY (`orderID`),
+  ADD KEY `FK_InventoryID` (`inventoryID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -148,6 +150,12 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `orderedproduct`
   ADD CONSTRAINT `FK_OrderID` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `FK_InventoryID` FOREIGN KEY (`inventoryID`) REFERENCES `inventory` (`inventoryID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
