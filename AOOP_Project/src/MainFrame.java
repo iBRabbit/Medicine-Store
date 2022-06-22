@@ -1,13 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Vector;
-
-import Data.Accounts;
 
 public class MainFrame extends JFrame implements ActionListener{
 
-
+    public static Boolean isLogged = false;
+    public static Integer accountID = -1;
 
     JPanel header = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -32,6 +30,19 @@ public class MainFrame extends JFrame implements ActionListener{
 
     LoginFrame loginFrame;
 
+    public static Boolean getIsLogged() {
+        return isLogged;
+    }
+    public static void setIsLogged(Boolean isLogged) {
+        MainFrame.isLogged = isLogged;
+    }
+    public static Integer getAccountID() {
+        return accountID;
+    }
+    public static void setAccountID(Integer accountID) {
+        MainFrame.accountID = accountID;
+    }
+
     void setMenuAdmin(Database db){
         this.menuAdmin =  new JMenu("Admin");
         this.loginItem = new JMenuItem("Login");
@@ -39,8 +50,13 @@ public class MainFrame extends JFrame implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 loginFrame = new LoginFrame(db);
+                
+                if(isLogged) {
+                    JOptionPane.showMessageDialog(null, "You are already logged in.");
+                    return;
+                }
+
                 loginFrame.setVisible(true);
-//                loginFrame.liste
             }
         });
 
@@ -50,8 +66,6 @@ public class MainFrame extends JFrame implements ActionListener{
         Database db = new Database();
         db.createConnection();
 
-        Vector<Accounts> accounts = new Vector<>();
-        accounts = db.loadAccountsData();
         setTitle("AOOP Project");
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,8 +99,14 @@ public class MainFrame extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == inventoryMenuBtn)
+        if(e.getSource() == inventoryMenuBtn) {
+            if(!isLogged) {
+                JOptionPane.showMessageDialog(null, "You haven't login as an admin yet.");
+                return;
+            }
+            
             new InventoryFrame();
-
+        }
+            
     }
 }

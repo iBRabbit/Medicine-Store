@@ -5,14 +5,41 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import Data.Accounts;
+import Classes.Accounts;
+import Classes.Inventory;
 
 public class Database {
     Connection connectionID;
     Statement statement;
     ResultSet result;
 
-    public Vector <Accounts> loadAccountsData()  {
+    public void query(String query) {
+        try {
+            statement.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Vector <Inventory> getInventoryData() {
+        Vector <Inventory> vInventory = new Vector <Inventory>();
+        Integer dataSize = 0;
+        try {
+            result = statement.executeQuery("SELECT * FROM inventory");
+            while(result.next()) {
+                Inventory inv = new Inventory(result.getInt(1), result.getString(2), result.getInt(3), result.getInt(4), result.getInt(5));
+                vInventory.add(inv);
+                dataSize++;
+            }
+
+            System.out.println("Successfully loaded " + dataSize + " inventory data.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vInventory;
+    }
+
+    public Vector <Accounts> getAccountsData()  {
         Vector<Accounts> users = new Vector<Accounts>();
 
         try {
