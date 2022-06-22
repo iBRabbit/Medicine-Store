@@ -6,13 +6,36 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import Data.Accounts;
+import Data.Inventory;
 
 public class Database {
     Connection connectionID;
     Statement statement;
     ResultSet result;
 
-    public Vector <Accounts> loadAccountsData()  {
+
+
+    public Vector <Inventory> getInventoryData() {
+        Vector <Inventory> vInventory = new Vector <Inventory>();
+        System.out.println("Masukawal");
+        Integer dataSize = 0;
+        try {
+            result = statement.executeQuery("SELECT * FROM inventory");
+            while(result.next()) {
+                System.out.println("Mausk 2");
+                Inventory inv = new Inventory(result.getInt(1), result.getString(2), result.getInt(3), result.getInt(4), 0);
+                vInventory.add(inv);
+                dataSize++;
+            }
+
+            System.out.println("Successfully loaded " + dataSize + " inventory data.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vInventory;
+    }
+
+    public Vector <Accounts> getAccountsData()  {
         Vector<Accounts> users = new Vector<Accounts>();
 
         try {

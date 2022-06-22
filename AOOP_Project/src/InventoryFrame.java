@@ -1,16 +1,20 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
-import java.awt.BorderLayout;
 import java.awt.*;
 // import java.awt.event.*;
 import java.util.Vector;
 
+import Data.Inventory;
 
 public class InventoryFrame {
+    Database db = new Database();
+   
     JFrame inventoryFrame = new JFrame("Inventory");
+
+    Vector <Inventory> vInventory = new Vector<>();     
     Vector<String> header = new Vector<>();
     Vector<Vector> values = new Vector<>();
+    
 
     DefaultTableModel dtm = new DefaultTableModel();
     JTable table = new JTable();
@@ -25,31 +29,32 @@ public class InventoryFrame {
     JLabel productQuantityLabel = new JLabel("Jumlah Produk");
     JTextField productQuantityTextField = new JTextField();
 
-    JButton submitButton = new JButton("Masukkan Produk (Admin)");
-    
-    public InventoryFrame() {    
-    
+    JButton submitButton = new JButton("Masukkan Produk ");
+
+    public void loadInventoryData() {
         header.add("ID");
         header.add("Name");
         header.add("Price");
         header.add("Quantity");
         header.add("Status");
-        
-        Vector<String> testData1 = new Vector<>();
-        testData1.add("001");
-        testData1.add("Lalala");
-        testData1.add("$15.000");
-        testData1.add("15");
-        testData1.add("Pending");
 
-        Vector<String> testData2 = new Vector<>();
-        testData2.add("002");
-        testData2.add("Yeyeye");
-        testData2.add("$30.000");
-        testData2.add("10");
-        testData2.add("Pending");
-        values.add(testData1);
-        values.add(testData2);
+        for(Inventory i : vInventory) {
+            Vector <String> temp = new Vector<>();
+            temp.add(i.getInventoryID().toString());
+            temp.add(i.getName());
+            temp.add(i.getPrice().toString());
+            temp.add(i.getQuantity().toString());
+            temp.add(i.getStatusName());
+
+            values.add(temp);
+        }
+
+    }
+
+    void generateLayout() {
+        db.createConnection();
+        vInventory = db.getInventoryData();
+        loadInventoryData();
 
         insertPanel.add(productNameLabel);
         insertPanel.add(productNameTextField);
@@ -72,6 +77,12 @@ public class InventoryFrame {
         inventoryFrame.add(insertPanel, BorderLayout.SOUTH);
 
         inventoryFrame.setVisible(true);
+    }
+
+    public InventoryFrame() {    
+        
+        generateLayout();
+
         
     }
 
