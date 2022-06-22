@@ -60,6 +60,11 @@ public class LoginFrame extends JFrame implements ActionListener {
         accounts = this.db.login(userValue, passValue);
         if (accounts != null) {
             JOptionPane.showMessageDialog(null, "Login Success, welcome ".concat(accounts.getUsername()));
+
+            MainFrame.setIsLogged(true);
+            MainFrame.setAccountID(accounts.getAccountID());
+
+            dispose();
         }
         else{
             JOptionPane.showMessageDialog(null, "Please enter valid username and password");
