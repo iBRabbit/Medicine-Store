@@ -4,10 +4,10 @@ import javax.swing.table.DefaultTableModel;
 import Classes.Inventory;
 
 import java.awt.*;
-// import java.awt.event.*;
+import java.awt.event.*;
 import java.util.Vector;
 
-public class InventoryFrame {
+public class InventoryFrame implements ActionListener{
     Database db = new Database();
 
     JFrame inventoryFrame = new JFrame("Inventory");
@@ -64,6 +64,8 @@ public class InventoryFrame {
         insertPanel.add(productQuantityTextField);
         insertPanel.add(emptyLabel);
         insertPanel.add(submitButton);
+
+        submitButton.addActionListener(this);
     
         dtm.setDataVector(values, header);
         table.setModel(dtm);
@@ -81,6 +83,40 @@ public class InventoryFrame {
 
     public InventoryFrame() {    
         generateLayout();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        if(e.getSource() == submitButton) {
+            String name;
+            Integer price, quantity;
+
+            try {
+                name = productNameTextField.getText();
+                price = Integer.parseInt(productPriceTextField.getText());
+                quantity = Integer.parseInt(productQuantityTextField.getText());
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Please enter valid price or quantity");
+                productPriceTextField.setText("");
+                productQuantityTextField.setText("");
+                return;
+            }
+
+            String query = "INSERT INTO `inventory` (`inventoryID`, `name`, `price`, `quantity`, `status`) VALUES (NULL, " + 
+                            "' " + name + "', " +
+                            "'" + price + "', " +
+                            "'" + quantity + "', " +
+                            "'0');";
+
+            System.out.println("Query Success : " + query);
+            db.query(query);
+
+            inventoryFrame.dispose();
+            new InventoryFrame();
+
+        }
+
     }
 
 }

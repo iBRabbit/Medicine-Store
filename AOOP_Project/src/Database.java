@@ -13,13 +13,21 @@ public class Database {
     Statement statement;
     ResultSet result;
 
+    public void query(String query) {
+        try {
+            statement.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Vector <Inventory> getInventoryData() {
         Vector <Inventory> vInventory = new Vector <Inventory>();
         Integer dataSize = 0;
         try {
             result = statement.executeQuery("SELECT * FROM inventory");
             while(result.next()) {
-                Inventory inv = new Inventory(result.getInt(1), result.getString(2), result.getInt(3), result.getInt(4), 0);
+                Inventory inv = new Inventory(result.getInt(1), result.getString(2), result.getInt(3), result.getInt(4), result.getInt(5));
                 vInventory.add(inv);
                 dataSize++;
             }
