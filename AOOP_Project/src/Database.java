@@ -5,24 +5,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import Data.Accounts;
-import Data.Inventory;
+import Classes.Accounts;
+import Classes.Inventory;
 
 public class Database {
     Connection connectionID;
     Statement statement;
     ResultSet result;
 
-
-
     public Vector <Inventory> getInventoryData() {
         Vector <Inventory> vInventory = new Vector <Inventory>();
-        System.out.println("Masukawal");
         Integer dataSize = 0;
         try {
             result = statement.executeQuery("SELECT * FROM inventory");
             while(result.next()) {
-                System.out.println("Mausk 2");
                 Inventory inv = new Inventory(result.getInt(1), result.getString(2), result.getInt(3), result.getInt(4), 0);
                 vInventory.add(inv);
                 dataSize++;

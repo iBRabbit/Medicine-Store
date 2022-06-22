@@ -1,6 +1,7 @@
-import Data.Accounts;
-
 import javax.swing.*;
+
+import Classes.Accounts;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

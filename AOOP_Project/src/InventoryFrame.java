@@ -1,21 +1,21 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import Classes.Inventory;
+
 import java.awt.*;
 // import java.awt.event.*;
 import java.util.Vector;
 
-import Data.Inventory;
-
 public class InventoryFrame {
     Database db = new Database();
-   
+
     JFrame inventoryFrame = new JFrame("Inventory");
 
     Vector <Inventory> vInventory = new Vector<>();     
     Vector<String> header = new Vector<>();
     Vector<Vector> values = new Vector<>();
     
-
     DefaultTableModel dtm = new DefaultTableModel();
     JTable table = new JTable();
     JPanel tablePanel = new JPanel();
@@ -80,10 +80,7 @@ public class InventoryFrame {
     }
 
     public InventoryFrame() {    
-        
         generateLayout();
-
-        
     }
 
 }
