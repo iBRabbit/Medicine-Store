@@ -39,7 +39,6 @@ public class Main implements ActionListener{
         Vector<Accounts> accounts = new Vector<>();
         accounts = db.loadAccountsData();
 
-
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(300, 300);
