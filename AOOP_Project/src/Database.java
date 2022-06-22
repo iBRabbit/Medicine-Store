@@ -28,6 +28,29 @@ public class Database {
         return users;
     }
 
+    public Accounts login(String username, String password){
+        try {
+            result = statement.executeQuery(
+                    "SELECT * FROM accounts where "
+                            .concat("username=\"")
+                            .concat(username)
+                            .concat("\"")
+                            .concat(" and ")
+                            .concat("password=\"")
+                            .concat(password)
+                            .concat("\";")
+            );
+            if(result.next() == false) {
+                return null;
+            }else {
+                Accounts acc = new Accounts(result.getInt(1), result.getString(2), result.getString(3));
+                return acc;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void createConnection() {
 
         try {
