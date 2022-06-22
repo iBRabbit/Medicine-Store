@@ -34,7 +34,7 @@ public class Main implements ActionListener{
     public Main() {
 
         Database db = new Database();
-        db.createConnection();    
+        db.createConnection();
 
         Vector<Accounts> accounts = new Vector<>();
         accounts = db.loadAccountsData();
@@ -51,8 +51,6 @@ public class Main implements ActionListener{
         menuBar.add(menuAdmin);
         menuBar.add(menuHelp);
 
-        // header.add(loginBtn);
-        
         containerContent.add(inventoryMenuBtn);
         containerContent.add(onSellMenuBtn);
         containerContent.add(ordersMenuBtn);
@@ -64,7 +62,6 @@ public class Main implements ActionListener{
 
         footer.add(footerLabel);
 
-        // mainFrame.add(header, BorderLayout.NORTH);
         mainFrame.add(containerLayout, BorderLayout.CENTER);
         mainFrame.add(footer, BorderLayout.SOUTH);
         mainFrame.setVisible(true);
