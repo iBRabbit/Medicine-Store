@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.table.DefaultTableModel;
 
 import Classes.Inventory;
@@ -19,17 +20,25 @@ public class InventoryFrame implements ActionListener{
     DefaultTableModel dtm = new DefaultTableModel();
     JTable table = new JTable();
     JPanel tablePanel = new JPanel();
-    JLabel emptyLabel = new JLabel("");
+    JLabel emptyLabel1 = new JLabel("");
+    JLabel emptyLabel2 = new JLabel("");
 
+    JPanel adminPanel = new JPanel(new GridLayout(1,2));
+    
     JPanel insertPanel = new JPanel(new GridLayout(4,2));
-    JLabel productNameLabel = new JLabel("Nama Produk");
+    JLabel productNameLabel = new JLabel("Nama Produk ");
     JTextField productNameTextField = new JTextField();
-    JLabel productPriceLabel = new JLabel("Harga Product");
+    JLabel productPriceLabel = new JLabel("Harga Product ");
     JTextField productPriceTextField = new JTextField();
-    JLabel productQuantityLabel = new JLabel("Jumlah Produk");
+    JLabel productQuantityLabel = new JLabel("Jumlah Produk ");
     JTextField productQuantityTextField = new JTextField();
 
-    JButton submitButton = new JButton("Masukkan Produk ");
+    JPanel removePanel = new JPanel(new GridLayout(2,2));
+    JLabel removeLabel = new JLabel("Remove ID ");
+    JTextField removeTextField = new JTextField();
+
+    JButton submitButton = new JButton("Masukkan Produk");
+    JButton removeButton = new JButton("Hapus Produk");
 
     public void loadInventoryData() {
         header.add("ID");
@@ -56,13 +65,17 @@ public class InventoryFrame implements ActionListener{
         vInventory = db.getInventoryData();
         loadInventoryData();
 
+        productNameLabel.setHorizontalAlignment(JLabel.RIGHT);
+        productPriceLabel.setHorizontalAlignment(JLabel.RIGHT);
+        productQuantityLabel.setHorizontalAlignment(JLabel.RIGHT);
+
         insertPanel.add(productNameLabel);
         insertPanel.add(productNameTextField);
         insertPanel.add(productPriceLabel);
         insertPanel.add(productPriceTextField);
         insertPanel.add(productQuantityLabel);
         insertPanel.add(productQuantityTextField);
-        insertPanel.add(emptyLabel);
+        insertPanel.add(emptyLabel1);
         insertPanel.add(submitButton);
 
         submitButton.addActionListener(this);
@@ -72,11 +85,22 @@ public class InventoryFrame implements ActionListener{
         table.setEnabled(false);
         tablePanel.add(new JScrollPane(table));
         
-        inventoryFrame.setSize(500, 600);
+        removeLabel.setHorizontalAlignment(JLabel.RIGHT);
+        removePanel.add(removeLabel);
+        removePanel.add(removeTextField);
+        removePanel.add(emptyLabel2);
+        removePanel.add(removeButton);
+
+        removeButton.addActionListener(this);
+
+        adminPanel.add(insertPanel);
+        adminPanel.add(removePanel);
+
+        inventoryFrame.setSize(500, 650);
         inventoryFrame.setLocationRelativeTo(null);
 
         inventoryFrame.add(tablePanel, BorderLayout.NORTH);
-        inventoryFrame.add(insertPanel, BorderLayout.SOUTH);
+        inventoryFrame.add(adminPanel, BorderLayout.SOUTH);
 
         inventoryFrame.setVisible(true);
     }
@@ -88,6 +112,24 @@ public class InventoryFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        if(e.getSource() == removeButton) {
+            Integer id;
+
+            try {
+                id = Integer.parseInt(removeTextField.getText());
+            } catch (NumberFormatException nfe) {
+                removeTextField.setText("");
+                JOptionPane.showMessageDialog(null, "Please enter a valid ID");
+                return;
+            }
+
+            String query = "DELETE FROM inventory WHERE inventoryID = " + id;
+            db.query(query);
+
+            inventoryFrame.dispose();
+            new InventoryFrame();
+        }
+
         if(e.getSource() == submitButton) {
             String name;
             Integer price, quantity;
@@ -104,7 +146,7 @@ public class InventoryFrame implements ActionListener{
             }
 
             String query = "INSERT INTO `inventory` (`inventoryID`, `name`, `price`, `quantity`, `status`) VALUES (NULL, " + 
-                            "' " + name + "', " +
+                            "'" + name + "', " +
                             "'" + price + "', " +
                             "'" + quantity + "', " +
                             "'0');";
