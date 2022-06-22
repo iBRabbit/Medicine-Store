@@ -1,4 +1,4 @@
-package Data;
+package Classes;
 
 public class Accounts {
     private Integer accountID;
