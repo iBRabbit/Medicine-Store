@@ -88,6 +88,7 @@ public class MainFrame extends JFrame implements ActionListener{
         containerLayout.add(containerContent);
 
         inventoryMenuBtn.addActionListener(this);
+        onSellMenuBtn.addActionListener(this);
 
         footer.add(footerLabel);
 
@@ -99,6 +100,10 @@ public class MainFrame extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if(e.getSource() == onSellMenuBtn) 
+            new OnSaleFrame();
+        
         if(e.getSource() == inventoryMenuBtn) {
             if(!isLogged) {
                 JOptionPane.showMessageDialog(null, "You haven't login as an admin yet.");

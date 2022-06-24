@@ -1,5 +1,5 @@
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
+// import javax.swing.GroupLayout.Alignment;
 import javax.swing.table.DefaultTableModel;
 
 import Classes.Inventory;
@@ -16,7 +16,7 @@ public class InventoryFrame implements ActionListener{
 
     Vector <Inventory> vInventory = new Vector<>();     
     Vector<String> header = new Vector<>();
-    Vector<Vector> values = new Vector<>();
+    Vector<Vector <String>> values = new Vector<>();
     
     DefaultTableModel dtm = new DefaultTableModel();
     JTable table = new JTable();

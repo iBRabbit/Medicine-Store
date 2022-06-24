@@ -21,6 +21,24 @@ public class Database {
         }
     }
 
+    public Vector <Inventory> getOnSaleData() {
+        Vector <Inventory> vInventory = new Vector <Inventory>();
+        Integer dataSize = 0;
+        try {
+            result = statement.executeQuery("SELECT * FROM inventory WHERE status = 1");
+            while(result.next()) {
+                Inventory inv = new Inventory(result.getInt(1), result.getString(2), result.getInt(3), result.getInt(4), result.getInt(5));
+                vInventory.add(inv);
+                dataSize++;
+            }
+
+            System.out.println("Successfully loaded " + dataSize + " on sale data.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vInventory;
+    }
+
     public Vector <Inventory> getInventoryData() {
         Vector <Inventory> vInventory = new Vector <Inventory>();
         Integer dataSize = 0;
