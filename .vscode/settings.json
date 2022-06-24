@@ -2,6 +2,7 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "d:\\OneDrive - Bina Nusantara\\[S-6] 2021 - 2022 Even Semester\\Advanced Object Oriented Programming\\Project\\mysql-connector-java-8.0.27.jar",
-        "Database Stuff/mysql-connector-java-8.0.27.jar"
+        "Database Stuff/mysql-connector-java-8.0.27.jar",
+        "Database Stuff/mysql-connector-java-8.0.29.jar"
     ]
 }

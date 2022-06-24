@@ -6,6 +6,7 @@ import Classes.Inventory;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class InventoryFrame implements ActionListener{
@@ -23,7 +24,7 @@ public class InventoryFrame implements ActionListener{
     JLabel emptyLabel1 = new JLabel("");
     JLabel emptyLabel2 = new JLabel("");
 
-    JPanel adminPanel = new JPanel(new GridLayout(1,2));
+    JPanel adminPanel = new JPanel(new GridLayout(1,3));
     
     JPanel insertPanel = new JPanel(new GridLayout(4,2));
     JLabel productNameLabel = new JLabel("Nama Produk ");
@@ -39,6 +40,12 @@ public class InventoryFrame implements ActionListener{
 
     JButton submitButton = new JButton("Masukkan Produk");
     JButton removeButton = new JButton("Hapus Produk");
+
+    JPanel updatePanel = new JPanel(new GridLayout(2,2));
+    JLabel changeStatusLabel = new JLabel("Change status to for ID :");
+    JTextField changeStatusTextField = new JTextField();
+    JLabel emptyLabel3 = new JLabel("");
+    JButton updateButton = new JButton("Update");
 
     public void loadInventoryData() {
         header.add("ID");
@@ -93,8 +100,17 @@ public class InventoryFrame implements ActionListener{
 
         removeButton.addActionListener(this);
 
+        updatePanel.add(changeStatusLabel);
+        updatePanel.add(changeStatusTextField);
+        updatePanel.add(emptyLabel3);
+        updatePanel.add(updateButton);
+
+        updateButton.addActionListener(this);
+
         adminPanel.add(insertPanel);
         adminPanel.add(removePanel);
+        adminPanel.add(updatePanel);
+        
 
         inventoryFrame.setSize(500, 650);
         inventoryFrame.setLocationRelativeTo(null);
@@ -112,6 +128,35 @@ public class InventoryFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        if(e.getSource() == updateButton) {
+            Integer id;
+
+            try {
+                id = Integer.parseInt(changeStatusTextField.getText());
+            } catch (NumberFormatException nfe) {
+                changeStatusTextField.setText("");
+                JOptionPane.showMessageDialog(null, "Please enter a valid ID");
+                return;
+            }
+
+            String query;
+            query = "SELECT * FROM inventory WHERE inventoryID = " + id;
+
+            try {
+                db.result = db.statement.executeQuery(query);
+                db.result.next();
+                if(db.result.getInt(5) == 0) 
+                    db.query("UPDATE inventory SET status = 1 WHERE inventoryID = " + id);
+                else 
+                    db.query("UPDATE inventory SET status = 0 WHERE inventoryID = " + id);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+
+            inventoryFrame.dispose();
+            new InventoryFrame();
+        }
+
         if(e.getSource() == removeButton) {
             Integer id;
 

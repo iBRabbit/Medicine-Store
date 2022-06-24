@@ -20,7 +20,7 @@ public class MainFrame extends JFrame implements ActionListener{
     JButton ordersMenuBtn = new JButton("Orders");
 
     JPanel footer = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    JLabel footerLabel = new JLabel("Created by : Group 4");
+    JLabel footerLabel = new JLabel("Created by : Group 3");
 
     JMenuBar menuBar = new JMenuBar();
     JMenu menuAdmin;
