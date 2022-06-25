@@ -139,6 +139,16 @@ public class InventoryFrame implements ActionListener{
                 return;
             }
 
+            if(!db.isDataExistsOnInventory(id)) {
+                JOptionPane.showMessageDialog(null, "ID you entered does not exist");
+                return;
+            }
+
+            if(vInventory.get(db.getInventoryVectorIndexByID(id)).getQuantity() <= 0) {
+                JOptionPane.showMessageDialog(null, "You can't sell an outstocked products.");
+                return;
+            }
+
             String query;
             query = "SELECT * FROM inventory WHERE inventoryID = " + id;
 
