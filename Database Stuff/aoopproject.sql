@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2022 at 11:47 AM
+-- Generation Time: Jun 25, 2022 at 07:21 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -55,19 +55,15 @@ CREATE TABLE `inventory` (
   `status` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `orderedproduct`
+-- Dumping data for table `inventory`
 --
 
-CREATE TABLE `orderedproduct` (
-  `orderedProductID` int(12) NOT NULL,
-  `name` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `orderID` int(12) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `inventory` (`inventoryID`, `name`, `price`, `quantity`, `status`) VALUES
+(1, 'Obat sakit kepala', 15000, 1, 0),
+(2, 'Obat radang', 10000, 10, 0),
+(3, 'Obat sakit perut', 5000, 0, 0),
+(6, 'Obat pilek', 15000, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -78,10 +74,18 @@ CREATE TABLE `orderedproduct` (
 CREATE TABLE `orders` (
   `orderID` int(12) NOT NULL,
   `inventoryID` int(12) NOT NULL,
-  `name` varchar(255) NOT NULL,
   `orderedBy` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL
+  `address` varchar(255) NOT NULL,
+  `quantity` int(12) DEFAULT 0,
+  `price` int(12) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`orderID`, `inventoryID`, `orderedBy`, `address`, `quantity`, `price`) VALUES
+(14, 6, 'Felix', 'Jalan.Felix', 10, 150000);
 
 --
 -- Indexes for dumped tables
@@ -98,13 +102,6 @@ ALTER TABLE `accounts`
 --
 ALTER TABLE `inventory`
   ADD PRIMARY KEY (`inventoryID`);
-
---
--- Indexes for table `orderedproduct`
---
-ALTER TABLE `orderedproduct`
-  ADD PRIMARY KEY (`orderedProductID`),
-  ADD KEY `FK_OrderID` (`orderID`);
 
 --
 -- Indexes for table `orders`
@@ -127,29 +124,17 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `inventoryID` int(12) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `orderedproduct`
---
-ALTER TABLE `orderedproduct`
-  MODIFY `orderedProductID` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `inventoryID` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderID` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `orderID` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `orderedproduct`
---
-ALTER TABLE `orderedproduct`
-  ADD CONSTRAINT `FK_OrderID` FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
