@@ -24,13 +24,15 @@ public class OnSaleFrame implements ActionListener{
 
     JPanel adminPanel = new JPanel(new GridLayout(1,3));
 
-    JPanel insertPanel = new JPanel(new GridLayout(4,2));
+    JPanel insertPanel = new JPanel(new GridLayout(5,2));
     JLabel usernameLabel = new JLabel("Nama Pembeli : ");
     JTextField usernameTextField = new JTextField();
     JLabel productIDLabel = new JLabel("ID Barang yang mau dibeli ");
     JTextField productIDTextField = new JTextField();
     JLabel userAddressLabel = new JLabel("Alamat");
     JTextField userAddressTextField = new JTextField();
+    JLabel userQuantityLabel = new JLabel("Quantity");
+    JTextField userQuantityTextField = new JTextField();
     JButton buyButton = new JButton("Buy");
 
     public void loadOnSaleData() {
@@ -69,6 +71,8 @@ public class OnSaleFrame implements ActionListener{
         insertPanel.add(productIDTextField);
         insertPanel.add(userAddressLabel);
         insertPanel.add(userAddressTextField);
+        insertPanel.add(userQuantityLabel);
+        insertPanel.add(userQuantityTextField);
         insertPanel.add(buyButton);
 
         adminPanel.add(insertPanel);
@@ -91,8 +95,32 @@ public class OnSaleFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == buyButton) {
-            // String username, address;
-            // Integer quantity, inventoryID;
+            String username, address;
+            Integer quantity, inventoryID;
+            try {
+                username = usernameTextField.getText();
+                address = userAddressTextField.getText();
+                quantity = Integer.parseInt(userQuantityTextField.getText());
+                inventoryID = Integer.parseInt(productIDTextField.getText());
+            } catch (Exception f) {
+                JOptionPane.showMessageDialog(null, "All text must not empty. Qty and id must be number");
+                return;
+            }
+            String query = "INSERT INTO `orders` (`orderID`, `invetoryID`, `name`, `orderedBy`, `address`) VALUES (NULL, " + 
+            "'" + inventoryID + "', " +
+            "'" + db.getProductNameByID(inventoryID) + "', " +
+            "'" + username + "', " +
+            "'" + address + "'," + 
+            "'" + quantity + "');";
+
+            int inventoryQty = 0;
+            db.setInventoryQuantity(quantity,inventoryID);
+
+            System.out.println("Query Success : " + query);
+            db.query(query);
+
+            onSaleFrame.dispose();
+            new OnSaleFrame();
         }
         
     }

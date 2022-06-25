@@ -21,6 +21,14 @@ public class Database {
         }
     }
 
+    public void setInventoryQuantity(Integer qty, Integer id) {
+        try {
+            result = statement.executeQuery("UPDATE inventory SET quantity = "+qty+" WHERE inventoryID = "+id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Vector <Inventory> getOnSaleData() {
         Vector <Inventory> vInventory = new Vector <Inventory>();
         Integer dataSize = 0;
@@ -37,6 +45,18 @@ public class Database {
             e.printStackTrace();
         }
         return vInventory;
+    }
+
+    public String getProductNameByID(Integer ID) {
+        String name="";
+        try {
+            result = statement.executeQuery("SELECT name FROM inventory WHERE inventoryID = "+ID);
+            result.next();
+            name = result.getString(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
 
     public Vector <Inventory> getInventoryData() {
