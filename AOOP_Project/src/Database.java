@@ -21,12 +21,36 @@ public class Database {
         }
     }
 
-    public void setInventoryQuantity(Integer qty, Integer id) {
-        try {
-            result = statement.executeQuery("UPDATE inventory SET quantity = "+qty+" WHERE inventoryID = "+id);
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public Boolean isDataExistsOnSale(Integer inventoryID) {
+
+        Vector <Inventory> vOnSale = new Vector<>();
+        vOnSale = getOnSaleData();
+
+        for (Inventory inv : vOnSale) {
+            if(inv.getInventoryID() == inventoryID)
+                return true;
         }
+
+        return false;
+    }
+
+    public Integer getInventoryVectorIndexByID(Integer id) {
+
+        Vector <Inventory> vInventory = new Vector <>();
+        vInventory = getInventoryData();
+
+        for(int i = 0; i < vInventory.size(); i++) {
+            if(vInventory.get(i).getInventoryID() == id)
+                return i;
+        }
+
+        return -1;
+    }
+
+
+    public void setInventoryQuantity(Integer qty, Integer id) {
+        query("UPDATE inventory SET quantity = "+qty+" WHERE inventoryID = "+id);
+        System.out.println("UPDATE inventory SET quantity = "+qty+" WHERE inventoryID = "+id);
     }
 
     public Vector <Inventory> getOnSaleData() {

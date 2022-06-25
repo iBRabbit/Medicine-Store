@@ -1,5 +1,7 @@
 package Classes;
 
+import java.util.*;
+
 public class Inventory {
 
     private Integer inventoryID;
@@ -15,6 +17,7 @@ public class Inventory {
         this.quantity = quantity;
         this.status = status;
     }
+
 
     public String getStatusName() {
         return (this.status == 0) ? "Not Sale" : "On Sale";

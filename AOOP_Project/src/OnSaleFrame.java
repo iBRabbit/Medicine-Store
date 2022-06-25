@@ -12,7 +12,8 @@ public class OnSaleFrame implements ActionListener{
 
     JFrame onSaleFrame = new JFrame("On Sale");
 
-    Vector <Inventory> vInventory = new Vector<>();     
+    Vector <Inventory> vOnSale = new Vector<>();     
+    Vector <Inventory> vInventory = new Vector<>();
     Vector <String> header = new Vector<>();
     Vector <Vector <String>> values = new Vector<>();
 
@@ -42,7 +43,7 @@ public class OnSaleFrame implements ActionListener{
         header.add("Quantity");
         header.add("Status");
 
-        for(Inventory i : vInventory) {
+        for(Inventory i : vOnSale) {
             Vector <String> temp = new Vector<>();
             temp.add(i.getInventoryID().toString());
             temp.add(i.getName());
@@ -57,7 +58,8 @@ public class OnSaleFrame implements ActionListener{
 
     void generateLayout() {
         db.createConnection();
-        vInventory = db.getOnSaleData();
+        vOnSale = db.getOnSaleData();
+        vInventory = db.getInventoryData();
         loadOnSaleData();
     
         dtm.setDataVector(values, header);
@@ -97,6 +99,7 @@ public class OnSaleFrame implements ActionListener{
         if(e.getSource() == buyButton) {
             String username, address;
             Integer quantity, inventoryID;
+
             try {
                 username = usernameTextField.getText();
                 address = userAddressTextField.getText();
@@ -106,16 +109,34 @@ public class OnSaleFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "All text must not empty. Qty and id must be number");
                 return;
             }
-            String query = "INSERT INTO `orders` (`orderID`, `invetoryID`, `name`, `orderedBy`, `address`) VALUES (NULL, " + 
+
+            if(!db.isDataExistsOnSale(inventoryID)) {
+                JOptionPane.showMessageDialog(null, "Data you entered is not exists.");
+                return;
+            }
+
+            if(quantity <= 0) {
+                JOptionPane.showMessageDialog(null, "Your quantity must be greater than 0.");
+                return;
+            }
+
+            if(vInventory.get(db.getInventoryVectorIndexByID(inventoryID)).getQuantity() - quantity < 0) {
+                JOptionPane.showMessageDialog(null, "A quantity must not greater than our stocks.");
+                return;
+            }
+
+            String query = "INSERT INTO `orders` (`orderID`, `inventoryID`, `name`, `orderedBy`, `address`, `quantity`) VALUES (NULL, " + 
             "'" + inventoryID + "', " +
             "'" + db.getProductNameByID(inventoryID) + "', " +
             "'" + username + "', " +
             "'" + address + "'," + 
             "'" + quantity + "');";
 
-            int inventoryQty = 0;
-            db.setInventoryQuantity(quantity,inventoryID);
+            db.setInventoryQuantity(vInventory.get(db.getInventoryVectorIndexByID(inventoryID)).getQuantity() - quantity, inventoryID);
 
+            if(vInventory.get(db.getInventoryVectorIndexByID(inventoryID)).getQuantity() - quantity <= 0) 
+                db.query("UPDATE inventory SET status = 0 WHERE inventoryID = " + inventoryID);
+                
             System.out.println("Query Success : " + query);
             db.query(query);
 
