@@ -16,7 +16,7 @@ public class MainFrame extends JFrame implements ActionListener{
     JPanel containerContent = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
     JButton inventoryMenuBtn = new JButton("Inventory");
-    JButton onSellMenuBtn = new JButton("On Sell");
+    JButton onSellMenuBtn = new JButton("Buy");
     JButton ordersMenuBtn = new JButton("Orders");
 
     JPanel footer = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -89,6 +89,7 @@ public class MainFrame extends JFrame implements ActionListener{
 
         inventoryMenuBtn.addActionListener(this);
         onSellMenuBtn.addActionListener(this);
+        ordersMenuBtn.addActionListener(this);
 
         footer.add(footerLabel);
 
@@ -100,6 +101,15 @@ public class MainFrame extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if(e.getSource() == ordersMenuBtn) {
+            if(!isLogged) {
+                JOptionPane.showMessageDialog(null, "You haven't login as an admin yet.");
+                return;
+            }
+            
+            new OrdersFrame();
+        }
 
         if(e.getSource() == onSellMenuBtn) 
             new OnSaleFrame();

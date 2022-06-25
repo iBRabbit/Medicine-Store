@@ -81,7 +81,7 @@ public class OnSaleFrame implements ActionListener{
 
         buyButton.addActionListener(this);
 
-        onSaleFrame.setSize(500, 650);
+        onSaleFrame.setSize(500, 500);
         onSaleFrame.setLocationRelativeTo(null);
 
         onSaleFrame.add(tablePanel, BorderLayout.NORTH);
@@ -125,12 +125,12 @@ public class OnSaleFrame implements ActionListener{
                 return;
             }
 
-            String query = "INSERT INTO `orders` (`orderID`, `inventoryID`, `name`, `orderedBy`, `address`, `quantity`) VALUES (NULL, " + 
+            String query = "INSERT INTO `orders` (`orderID`, `inventoryID`, `orderedBy`, `address`, `quantity`, `price`) VALUES (NULL, " + 
             "'" + inventoryID + "', " +
-            "'" + db.getProductNameByID(inventoryID) + "', " +
             "'" + username + "', " +
             "'" + address + "'," + 
-            "'" + quantity + "');";
+            "'" + quantity + "'," + 
+            "'" + vInventory.get(db.getInventoryVectorIndexByID(inventoryID)).getPrice() * quantity + "');";
 
             db.setInventoryQuantity(vInventory.get(db.getInventoryVectorIndexByID(inventoryID)).getQuantity() - quantity, inventoryID);
 

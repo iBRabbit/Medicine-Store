@@ -5,8 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import Classes.Accounts;
-import Classes.Inventory;
+import Classes.*;
 
 public class Database {
     Connection connectionID;
@@ -19,6 +18,24 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Vector <Orders> getOrdersData() {
+        Vector <Orders> vOrders = new Vector <Orders>();
+        Integer dataSize = 0;
+        try {
+            result = statement.executeQuery("SELECT * FROM Orders");
+            while(result.next()) {
+                Orders order = new Orders(result.getInt("orderID"), result.getString("orderedBy"), result.getString("address"), result.getInt("quantity"), result.getInt("price"));
+                vOrders.add(order);
+                dataSize++;
+            }
+
+            System.out.println("Successfully loaded " + dataSize + " Orders data.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vOrders;
     }
 
     public Boolean isDataExistsOnSale(Integer inventoryID) {
@@ -46,7 +63,6 @@ public class Database {
 
         return -1;
     }
-
 
     public void setInventoryQuantity(Integer qty, Integer id) {
         query("UPDATE inventory SET quantity = "+qty+" WHERE inventoryID = "+id);
