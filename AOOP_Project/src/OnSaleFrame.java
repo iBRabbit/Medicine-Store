@@ -81,7 +81,7 @@ public class OnSaleFrame implements ActionListener{
 
         buyButton.addActionListener(this);
 
-        onSaleFrame.setSize(500, 500);
+        onSaleFrame.setSize(500, 650);
         onSaleFrame.setLocationRelativeTo(null);
 
         onSaleFrame.add(tablePanel, BorderLayout.NORTH);

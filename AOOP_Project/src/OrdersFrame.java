@@ -53,7 +53,7 @@ public class OrdersFrame {
         tablePanel.add(new JScrollPane(table));
         
 
-        ordersFrame.setSize(500, 650);
+        ordersFrame.setSize(500, 500);
         ordersFrame.setLocationRelativeTo(null);
 
         ordersFrame.add(tablePanel, BorderLayout.NORTH);
