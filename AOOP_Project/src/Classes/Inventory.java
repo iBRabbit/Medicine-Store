@@ -1,7 +1,5 @@
 package Classes;
 
-import java.util.*;
-
 public class Inventory {
 
     private Integer inventoryID;
