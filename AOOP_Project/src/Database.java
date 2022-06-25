@@ -38,6 +38,19 @@ public class Database {
         return vOrders;
     }
 
+    public Boolean isDataExistsOnInventory(Integer inventoryID) {
+
+        Vector <Inventory> vInventory = new Vector<>();
+        vInventory = getInventoryData();
+
+        for (Inventory inv : vInventory) {
+            if(inv.getInventoryID() == inventoryID)
+                return true;
+        }
+
+        return false;
+    }
+
     public Boolean isDataExistsOnSale(Integer inventoryID) {
 
         Vector <Inventory> vOnSale = new Vector<>();

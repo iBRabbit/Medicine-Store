@@ -168,6 +168,11 @@ public class InventoryFrame implements ActionListener{
                 return;
             }
 
+            if(!db.isDataExistsOnInventory(id)) {
+                JOptionPane.showMessageDialog(null, "ID you entered does not exist");
+                return;
+            }
+
             String query = "DELETE FROM inventory WHERE inventoryID = " + id;
             db.query(query);
 
